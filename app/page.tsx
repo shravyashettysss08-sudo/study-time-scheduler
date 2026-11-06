@@ -1,41 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-type Subject = {
-  id: number;
-  name: string;
-  duration: number;
-  completed: boolean;
-};
+import { useState } from "react";
+import { useSubjects } from "./context/SubjectContext";
 
 export default function Home() {
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const { subjects, setSubjects } = useSubjects();
+
   const [subjectName, setSubjectName] = useState("");
   const [duration, setDuration] = useState("30");
-  const [loaded, setLoaded] = useState(false);
-
-  // Load subjects from LocalStorage
-  useEffect(() => {
-    try {
-      const savedSubjects = localStorage.getItem("subjects");
-
-      if (savedSubjects) {
-        setSubjects(JSON.parse(savedSubjects));
-      }
-    } catch (error) {
-      console.error("Error loading subjects:", error);
-    }
-
-    setLoaded(true);
-  }, []);
-
-  // Save subjects to LocalStorage
-  useEffect(() => {
-    if (loaded) {
-      localStorage.setItem("subjects", JSON.stringify(subjects));
-    }
-  }, [subjects, loaded]);
 
   // Add Subject
   function addSubject() {
@@ -44,7 +16,7 @@ export default function Home() {
       return;
     }
 
-    const newSubject: Subject = {
+    const newSubject = {
       id: Date.now(),
       name: subjectName.trim(),
       duration: Number(duration),
@@ -107,7 +79,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-100 p-6">
-
       <div className="mx-auto max-w-4xl">
 
         {/* Header */}
@@ -124,7 +95,6 @@ export default function Home() {
 
           {/* Total Subjects */}
           <div className="rounded-xl bg-white p-5 shadow">
-
             <p className="text-sm text-gray-500">
               Total Subjects
             </p>
@@ -132,12 +102,10 @@ export default function Home() {
             <h2 className="mt-2 text-3xl font-bold text-blue-600">
               {totalSubjects}
             </h2>
-
           </div>
 
           {/* Study Time */}
           <div className="rounded-xl bg-white p-5 shadow">
-
             <p className="text-sm text-gray-500">
               Study Time
             </p>
@@ -145,12 +113,10 @@ export default function Home() {
             <h2 className="mt-2 text-3xl font-bold text-purple-600">
               {hours}h {minutes}m
             </h2>
-
           </div>
 
           {/* Completed */}
           <div className="rounded-xl bg-white p-5 shadow">
-
             <p className="text-sm text-gray-500">
               Completed
             </p>
@@ -158,7 +124,6 @@ export default function Home() {
             <h2 className="mt-2 text-3xl font-bold text-green-600">
               {completedCount}
             </h2>
-
           </div>
 
         </div>
@@ -167,7 +132,6 @@ export default function Home() {
         <div className="mb-8 rounded-xl bg-white p-6 shadow">
 
           <div className="mb-3 flex items-center justify-between">
-
             <h2 className="text-xl font-semibold text-gray-800">
               Study Progress
             </h2>
@@ -175,17 +139,14 @@ export default function Home() {
             <span className="font-bold text-blue-600">
               {progress}%
             </span>
-
           </div>
 
           {/* Progress Bar */}
           <div className="h-4 w-full overflow-hidden rounded-full bg-gray-200">
-
             <div
               className="h-full rounded-full bg-blue-600 transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
-
           </div>
 
           <p className="mt-3 text-sm text-gray-500">
@@ -227,13 +188,11 @@ export default function Home() {
               }
               className="rounded-lg border border-gray-300 p-3 text-gray-800 outline-none"
             >
-
               <option value="15">15 minutes</option>
               <option value="30">30 minutes</option>
               <option value="45">45 minutes</option>
               <option value="60">1 hour</option>
               <option value="90">1 hour 30 minutes</option>
-
             </select>
 
             {/* Add Button */}
@@ -291,11 +250,9 @@ export default function Home() {
                     </p>
 
                     {subject.completed && (
-
                       <p className="mt-1 text-sm font-medium text-green-600">
                         Completed ✓
                       </p>
-
                     )}
 
                   </div>
@@ -347,7 +304,6 @@ export default function Home() {
         </p>
 
       </div>
-
     </main>
   );
 }
