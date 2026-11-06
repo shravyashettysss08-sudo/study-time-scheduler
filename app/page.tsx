@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSubjects } from "./context/SubjectContext";
+import SubjectCard from "../components/SubjectCard";
 
 export default function Home() {
   const { subjects, setSubjects } = useSubjects();
@@ -225,70 +226,15 @@ export default function Home() {
 
             <div className="space-y-4">
 
+              {/* Reusable SubjectCard Component */}
               {subjects.map((subject) => (
 
-                <div
+                <SubjectCard
                   key={subject.id}
-                  className="flex flex-col justify-between gap-4 rounded-lg border border-gray-200 p-4 sm:flex-row sm:items-center"
-                >
-
-                  {/* Subject Details */}
-                  <div>
-
-                    <h3
-                      className={`text-lg font-semibold ${
-                        subject.completed
-                          ? "text-gray-400 line-through"
-                          : "text-gray-800"
-                      }`}
-                    >
-                      {subject.name}
-                    </h3>
-
-                    <p className="mt-1 text-sm text-gray-500">
-                      {subject.duration} minutes
-                    </p>
-
-                    {subject.completed && (
-                      <p className="mt-1 text-sm font-medium text-green-600">
-                        Completed ✓
-                      </p>
-                    )}
-
-                  </div>
-
-                  {/* Buttons */}
-                  <div className="flex gap-2">
-
-                    {/* Complete Button */}
-                    <button
-                      onClick={() =>
-                        completeSubject(subject.id)
-                      }
-                      className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
-                        subject.completed
-                          ? "bg-gray-500 hover:bg-gray-600"
-                          : "bg-green-600 hover:bg-green-700"
-                      }`}
-                    >
-                      {subject.completed
-                        ? "Undo"
-                        : "Mark Completed"}
-                    </button>
-
-                    {/* Delete Button */}
-                    <button
-                      onClick={() =>
-                        deleteSubject(subject.id)
-                      }
-                      className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
-
-                  </div>
-
-                </div>
+                  subject={subject}
+                  onToggle={completeSubject}
+                  onDelete={deleteSubject}
+                />
 
               ))}
 
